@@ -2,7 +2,9 @@ require('dotenv').config()
 
 import express from 'express'
 import bodyParser from 'body-parser'
+import mongoose from 'mongoose'
 import logger from './lib/logger'
+import routes from './routes'
 
 const app = express()
 const PORT = process.env.PORT || 8080
@@ -11,6 +13,16 @@ const PORT = process.env.PORT || 8080
 app.use(require('morgan')('short', {stream: logger.stream}))
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
+
+// Mongo connection
+let mongoOpts = {
+  poolSize: Number(process.env.MONGO_POOLSIZE) || 4,
+  useMongoClient: true
+}
+let mongoUri = `mongodb://${process.env.MONGO_HOST}/${process.env.MONGO_DB}`
+mongoose.connect(mongoUri, mongoOpts)
+
+mongoose.Promise = global.Promise
 
 // Service routes
 app.use('/connect', routes)
