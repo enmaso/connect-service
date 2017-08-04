@@ -1,0 +1,47 @@
+{
+  "name": "connect-service",
+  "version": "1.0.0",
+  "description": "Service Provider Connector Service",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "start": "nodemon src/index.js --exec babel-node",
+    "build": "babel src -d dist && pm2 start dist/index.js",
+    "lint": "eslint src/**",
+    "test": "mocha --compilers js:babel-register"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/enmaso/connect-service.git"
+  },
+  "keywords": [
+    "service",
+    "connector",
+    "node",
+    "microservice",
+    "rabbitmq"
+  ],
+  "author": "Enmaso Inc.",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/enmaso/connect-service/issues"
+  },
+  "homepage": "https://github.com/enmaso/connect-service#readme",
+  "dependencies": {
+    "amqplib": "0.5.1",
+    "body-parser": "1.17.2",
+    "dotenv": "4.0.0",
+    "express": "4.15.3"
+  },
+  "devDependencies": {
+    "babel-cli": "6.24.1",
+    "babel-preset-es2015": "6.24.1",
+    "babel-preset-stage-2": "6.24.1",
+    "babel-register": "6.24.1",
+    "eslint": "4.3.0",
+    "mocha": "3.5.0",
+    "nodemon": "1.11.0"
+  }
+}
