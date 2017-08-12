@@ -19,6 +19,12 @@ const schema = new mongoose.Schema({
     type: mongoose.Schema.Types.Mixed,
     required: true
   },
+  metadata: {
+    type: mongoose.Schema.Types.Mixed
+  },
+  text: {
+    type: String
+  },
   downloadUrl: {
     type: String
   },
