@@ -80,24 +80,21 @@ router.post('/', (req, res) => {
                   res.status(500).send(new Error())
                 } else {
                   // Establish amqp connection
-                  amqp.connect('amqp://' + process.env.RQ_HOST)
-                      .then(conn => {
-                        return conn.createChannel()
-                                   .then(ch => {
-                                     let q = 'box_queue'
-                                     let ok = ch.assertQueue(q, {durable: true})
-                                     return ok.then(() => {
-                                       // Connection established, loop through file list and start sending stuff to the queue to process
-                                       for(let i = 0; i < docs.ops.length; i++) {
-                                         let fileId = docs.ops[i]._id
-                                         ch.sendToQueue(q, Buffer.from(fileId), {deliveryMode: true})
-                                       }
-                                       return ch.close()
-                                     })
-                                   }).finally(() => {
-                                     conn.close()
-                                   })
-                      }).catch(logger.error)
+                  amqp.connect('amqp://' + process.env.RQ_HOST).then(function(conn) {
+                    return conn.createChannel().then(function(ch) {
+                      var q = 'box_queue';
+                      var ok = ch.assertQueue(q, {durable: true});
+
+                      return ok.then(function() {
+                        for(let i = 0; i < docs.ops.length; i++) {
+                          let fileId = docs.ops[i]._id.toString()
+                          ch.sendToQueue(q, Buffer.from(fileId), { deliveryMode: true })
+                        }
+                        return ch.close();
+                      });
+                    }).finally(function() { conn.close(); });
+                  }).catch(logger.error);
+
                   res.status(200).send(docs)
                 }
               })
