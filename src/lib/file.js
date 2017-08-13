@@ -22,6 +22,9 @@ const schema = new mongoose.Schema({
   metadata: {
     type: mongoose.Schema.Types.Mixed
   },
+  html: {
+    type: String
+  },
   text: {
     type: String
   },
